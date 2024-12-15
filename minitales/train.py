@@ -1,4 +1,5 @@
 import torch
+from minitales.evaluate import evaluate
 
 def train(model, optimizer, criterion, tokens, block_size, batch_size, device, epochs=20, sub_epochs=1000):
     """
@@ -6,6 +7,8 @@ def train(model, optimizer, criterion, tokens, block_size, batch_size, device, e
     """
 
     upper = len(tokens) - block_size - 1
+
+    losses = {"train": [], "test": []}
 
     print(f'Training for {epochs} epochs with {sub_epochs} sub-epochs each')
     for epoch in range(epochs):
@@ -28,4 +31,11 @@ def train(model, optimizer, criterion, tokens, block_size, batch_size, device, e
             total_loss += loss.item()
 
         avg_loss = total_loss / sub_epochs  # Corrected averaging
-        print(f'Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}')
+        losses["train"].append(avg_loss)
+
+        test_loss = evaluate(model, criterion, tokens, block_size, batch_size, device)
+        losses["test"].append(test_loss)
+
+        print(f'Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}, Test Loss: {test_loss:.4f}')
+
+    return losses
