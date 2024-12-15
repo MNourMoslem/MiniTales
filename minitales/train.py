@@ -13,7 +13,7 @@ def train(model, optimizer, criterion, tokens, block_size, batch_size, device, e
         total_loss = 0
 
         for _ in range(sub_epochs):  # Manually generating batches
-            indices = torch.randint(0, upper, (batch_size,))  # Generate all random indices at once
+            indices = torch.randint(0, upper, (batch_size,)).to(device)  # Generate all random indices at once
             input_ = tokens[indices[:, None] + torch.arange(block_size, device=device)]  # Use broadcasting to create input
             target = tokens[indices[:, None] + torch.arange(1, block_size + 1, device=device)]  # Use broadcasting to create target
 
