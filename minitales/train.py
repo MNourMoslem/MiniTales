@@ -1,6 +1,6 @@
 import torch
 
-def evaluate(model, criterion, test_data, block_size, batch_size, device):
+def evaluate(model, criterion, tokens, block_size, batch_size, n_samples, device):
     """
     Evaluate the model on the test dataset and calculate the loss.
     
@@ -16,22 +16,23 @@ def evaluate(model, criterion, test_data, block_size, batch_size, device):
     - avg_loss: The average loss over the test dataset.
     """
     model.eval()  # Set the model to evaluation mode
-    total_loss = 0
-    upper = len(test_data) - block_size - 1
 
+    upper = len(tokens) - block_size - 1
+
+    total_loss = 0
     with torch.no_grad():  # Disable gradient calculation
-        for i in range(0, upper, batch_size):
-            # Create input and target batches
-            indices = torch.arange(i, min(i + batch_size, upper)).to(device)
-            input_ = test_data[indices[:, None] + torch.arange(block_size, device=device)]
-            target = test_data[indices[:, None] + torch.arange(1, block_size + 1, device=device)]
+        for _ in range(n_samples):
+            indices = torch.randint(0, upper, (batch_size,)).to(device)  # Generate all random indices at once
+            input_ = tokens[indices[:, None] + torch.arange(block_size, device=device)]  # Use broadcasting to create input
+            target = tokens[indices[:, None] + torch.arange(1, block_size + 1, device=device)]  # Use broadcasting to create target
 
             output = model(input_).transpose(1, 2)  # Transpose for CrossEntropyLoss
-            loss = criterion(output, target)  # Compute loss
-            total_loss += loss.item()
 
-    avg_loss = total_loss / (upper // batch_size)  # Calculate average loss
-    return avg_loss
+            loss = criterion(output, target)  # Compute loss
+            loss = loss.item()
+            total_loss += loss
+
+    return total_loss / n_samples
 
 def train(model, optimizer, criterion, tokens, block_size, batch_size, device, epochs=20, sub_epochs=1000):
     """
