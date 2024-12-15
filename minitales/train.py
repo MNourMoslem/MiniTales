@@ -6,7 +6,7 @@ def train(model, optimizer, criterion, tokens, block_size, batch_size, device, e
     """
 
     upper = len(tokens) - block_size - 1
-    
+
     print(f'Training for {epochs} epochs with {sub_epochs} sub-epochs each')
     for epoch in range(epochs):
         model.train()  # Set the model to training mode
@@ -73,6 +73,8 @@ def main():
 
     print('Training...')
     train(model, optimizer, criterion, tensor_tokens, block_size, batch_size, device)
+
+    return model
 
 if __name__ == '__main__':
     main()
