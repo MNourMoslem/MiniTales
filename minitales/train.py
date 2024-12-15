@@ -30,7 +30,6 @@ def evaluate(model, criterion, tokens, block_size, batch_size, n_samples, device
             output = model(input_).transpose(1, 2)  # Transpose for CrossEntropyLoss
 
             loss = criterion(output[:, -1], target[:, -1])  # Compute loss
-            loss = loss.cpu().item()
             total_loss += loss
 
     return total_loss / n_samples
