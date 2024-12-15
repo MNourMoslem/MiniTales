@@ -34,7 +34,7 @@ def evaluate(model, criterion, tokens, block_size, batch_size, n_samples, device
 
     return total_loss / n_samples
 
-def train(model, optimizer, criterion, tokens, block_size, batch_size, device, epochs=20, sub_epochs=1000):
+def train(model, optimizer, criterion, tokens, block_size, batch_size, device, epochs=20, sub_epochs=1000, n_samples=100):
     """
     Train the model using the given optimizer and criterion.
     """
@@ -66,7 +66,7 @@ def train(model, optimizer, criterion, tokens, block_size, batch_size, device, e
         avg_loss = total_loss / sub_epochs  # Corrected averaging
         losses["train"].append(avg_loss)
 
-        test_loss = evaluate(model, criterion, tokens, block_size, batch_size, device)
+        test_loss = evaluate(model, criterion, tokens, block_size, batch_size, n_samples, device)
         losses["test"].append(test_loss)
 
         print(f'Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}, Test Loss: {test_loss:.4f}')
