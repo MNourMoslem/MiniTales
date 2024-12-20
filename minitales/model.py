@@ -109,7 +109,7 @@ class MT(nn.Module):
       elif isinstance(module, nn.Embedding):
           torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
-  def forward(self, idx, targets=None):
+  def forward(self, idx, targets=None, device = None):
       B, T = idx.shape
 
       tok_emb = self.token_embedding_table(idx) # (B,T,C)
