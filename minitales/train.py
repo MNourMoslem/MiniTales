@@ -55,7 +55,7 @@ def train(model, optimizer, criterion, tokens, block_size, batch_size, device, e
 
             optimizer.zero_grad()  # Zero the parameter gradients
 
-            output = model(input_).transpose(1, 2)  # Transpose for CrossEntropyLoss
+            output = model(input_, device = device).transpose(1, 2)  # Transpose for CrossEntropyLoss
 
             loss = criterion(output, target)  # Compute loss
             loss.backward()  # Backward pass
