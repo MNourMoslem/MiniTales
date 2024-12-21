@@ -50,7 +50,7 @@ def train(model : torch.nn.Module,
         if scheduler:
             scheduler.step()
 
-        if prompt_to_test != None:
+        if prompt_to_test != None and tokenizer != None:
             print("Prompt: {0}".format(prompt_to_test))
             answer = generate(model, tokenizer, prompt_to_test, device=device, *generate_kwargs)
             print("Answer: {0}".format(answer))
