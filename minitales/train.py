@@ -1,5 +1,6 @@
 import torch
 from .tools import generate, get_batch
+from typing import Any
 
 def train(model : torch.nn.Module,
           optimizer : torch.optim,
@@ -11,7 +12,10 @@ def train(model : torch.nn.Module,
           epochs : int = 20,
           sub_epochs : int = 1000,
           n_samples : int = 100,
-          scheduler : torch.optim.lr_scheduler = None):
+          scheduler : torch.optim.lr_scheduler = None,
+          prompt_to_test : str = None,
+          tokenizer : Any = None,
+          generate_kwargs : dict = None):
     """
     Train the model using the given optimizer and criterion.
     """
@@ -45,5 +49,10 @@ def train(model : torch.nn.Module,
 
         if scheduler:
             scheduler.step()
+
+        if prompt_to_test != None:
+            print("Prompt: {0}".format(prompt_to_test))
+            answer = generate(model, tokenizer, prompt_to_test, device=device, *generate_kwargs)
+            print("Answer: {0}".format(answer))
 
     return losses
