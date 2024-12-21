@@ -53,6 +53,6 @@ def train(model : torch.nn.Module,
         if prompt_to_test != None and tokenizer != None:
             print("Prompt: {0}".format(prompt_to_test))
             answer = generate(model, tokenizer, prompt_to_test, device=device, *generate_kwargs)
-            print("Answer: {0}".format(answer))
+            print("Answer: {0}\n".format(answer))
 
     return losses
