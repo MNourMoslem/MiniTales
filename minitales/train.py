@@ -15,7 +15,7 @@ def train(model : torch.nn.Module,
           scheduler : torch.optim.lr_scheduler = None,
           prompt_to_test : str = None,
           tokenizer : Any = None,
-          generate_kwargs : dict = None):
+          generate_kwargs : dict = {}):
     """
     Train the model using the given optimizer and criterion.
     """
