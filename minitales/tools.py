@@ -16,7 +16,7 @@ def generate(model : torch.nn.Module,
 
     for _ in range(max_length):
         input_tensor = torch.tensor(enc).unsqueeze(0).to(device)
-        output = model(input_tensor)  # Forward pass through the model
+        output = model(input_tensor, device = device)  # Forward pass through the model
 
         logits = output[:, -1, :].squeeze(0)
 
